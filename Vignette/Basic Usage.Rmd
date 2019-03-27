@@ -1,0 +1,54 @@
+---
+title: "Basic usage"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## built postAAR_subroutine.so for your system
+
+R CMD SHLIB postAAR_subroutine.f
+
+## load libraries data.table and spatstat
+library(data.table)
+library(spatstat)
+
+## Simulatie point patterns
+
+pp<-simrect(0,200,200,2,5,0.4,70,500,3,4)
+plot(pp$points)
+
+## add the simulated houses to the plot
+
+plot(pp$lines, add=TRUE)
+
+## extract the coordinates
+
+pp_coords<-coords(pp$points)
+str(pp_coords)
+
+## Then fuel it into PostAAR with minimum distance = 2, maximum distance = 5 and tolerance = 1
+
+pa<-postAAR(pp_coords$x,pp_coords$y,2,5,1)
+
+## plot the rectangles
+plot(pa$lines)
+
+## plot the points
+plot(pa$points)
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
