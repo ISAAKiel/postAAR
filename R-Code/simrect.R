@@ -1,17 +1,3 @@
-# depends on spatstat
-
-# Random simulation of houses in a quadrangular area
-# a = Left lower corner of area
-# b = Right upper corner of area
-# c = number of houses
-# d = shortest possible length of rectangle
-# e = longest possible length of rectangle
-# f = deviation from exactness
-# g = Percentage of postholes to preserve
-# h = Maximal number of crossrows
-# k = Maximal number of arcs (Mehrschiffigkeit)
-# rp = Additional number of random points
-
 simrect<-function(a,b,c,d,e,f,g,rp,h,k) {
   houses<-NULL
   house_sim<-NULL
@@ -54,7 +40,7 @@ simrect<-function(a,b,c,d,e,f,g,rp,h,k) {
     }
   }
   
-  cat(sep = '',"\n",c, " houses with ", rectangle_nr, " rectangles were simulated.\n")
+  cat(sep = '',"\n",c, " houses with ", rectangle_nr, " rectangles were simulated.\n\n")
 
 if (rp>0) {
   # generate additional randompoints
