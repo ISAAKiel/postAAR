@@ -5,19 +5,29 @@ postAAR<- function(a,b,x,y,z) {
   NH=0
   NR=0
   NRE=0
-  NHO=length(a)
+  amin<-min(a)
+  bmin<-min(b)
+  a<-a-amin
+  b<-b-bmin
+  
+  a_<-as.integer(round(a*100))
+  b_<-as.integer(round(b*100))
+  z_<-as.integer(round(z*100))
+  x_<-as.integer(round(x*100))
+  y_<-as.integer(round(y*100))
+  NHO=length(a_)
   NSO=1000000
   retvals<-.Fortran("postaar",
-                    SMIN=as.integer(x*100),
-                    SMAX=as.integer(y*100),
-                    TOL=as.integer(z*100),
+                    SMIN=as.integer(x_),
+                    SMAX=as.integer(y_),
+                    TOL=as.integer(z_),
                     NH=as.integer(NH),
                     NR=as.integer(NR),
                     NHO=as.integer(NHO),
                     NRE=as.integer(NRE),
                     NSO=as.integer(NSO),
-                    IX=as.integer(a*100),
-                    IY=as.integer(b*100),
+                    IX=as.integer(a_),
+                    IY=as.integer(b_),
                     POSTS=integer(NHO),
                     PX1=integer(NHO),
                     PY1=integer(NHO),
@@ -27,9 +37,8 @@ postAAR<- function(a,b,x,y,z) {
                     PY3=integer(NHO),
                     PX4=integer(NHO),
                     PY4=integer(NHO))
-  cat(sep = '',"\n", retvals$NH, " postholes were read in.\n\nWith the given parameters (minimal distance: ", retvals$SMIN/100, ", maximal distance: ", retvals$SMAX/100, ", tolerance of angle: ", retvals$TOL/100, "), postAAR found ", retvals$NR, " rectangles.\nThe expected number was ", retvals$NRE,".\n\n")
-  house_df<-(data.frame(rec_nr=retvals$POSTS,x1=retvals$PX1/100,y1=retvals$PY1/100,x2=retvals$PX2/100,y2=retvals$PY2/100,x3=retvals$PX3/100,y3=retvals$PY3/100,x4=retvals$PX4/100,y4=retvals$PY4/100)[1:retvals$NR,])
-
+  house_df<-(data.frame(rec_nr=retvals$POSTS,x1=amin+retvals$PX1/100,y1=bmin+retvals$PY1/100,x2=amin+retvals$PX2/100,y2=bmin+retvals$PY2/100,x3=amin+retvals$PX3/100,y3=bmin+retvals$PY3/100,x4=amin+retvals$PX4/100,y4=bmin+retvals$PY4/100)[1:retvals$NR,])
+  
   house<-data.frame(rbindlist(list(house_df[c("rec_nr","x1","y1")], house_df[c("rec_nr","x2","y2")], house_df[c("rec_nr","x3","y3")],house_df[c("rec_nr","x4","y4")])))
   names(house)<-c("rec_nr","x","y")
   
