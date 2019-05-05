@@ -1,0 +1,81 @@
+---
+title: "postAAR: Vignette"
+author: "Nils Müller-Scheeßel"
+date: "May 2019"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+## built postAAR_subroutine.so for your system
+
+R CMD SHLIB postAAR_subroutine.f
+
+## load libraries data.table and spatstat
+library(data.table)
+library(spatstat)
+
+## Simulatie point patterns
+set.seed(20)
+pp<-sim_rect(0,200,200,2,5,0.4,70,500,3,4)
+plot(pp$points)
+
+## add the simulated houses to the plot
+
+plot(pp$lines, add=TRUE)
+
+## extract the coordinates
+
+pp_coords<-coords(pp$points)
+str(pp_coords)
+
+## Then fuel it into find_rect with minimum distance = 2, maximum distance = 5 and tolerance = 1
+
+pa<-find_rect(pp_coords$x,pp_coords$y,2,5,1)
+
+## plot the rectangles
+plot(pa$lines)
+
+## plot the points
+plot(pa$points)
+
+
+## Figures
+
+The figure sizes have been customised so that you can easily put two images side-by-side. 
+
+```{r, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+You can enable figure captions by `fig_caption: yes` in YAML:
+
+    output:
+      rmarkdown::html_vignette:
+        fig_caption: yes
+
+Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+
+## More Examples
+
+You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+
+```{r, echo=FALSE, results='asis'}
+knitr::kable(head(mtcars, 10))
+```
+
+Also a quote using `>`:
+
+> "He who gives up [code] safety for [code] speed deserves neither."
+([via](https://twitter.com/hadleywickham/status/504368538874703872))

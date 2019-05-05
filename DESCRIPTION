@@ -1,0 +1,26 @@
+Package: postAAR
+Title: Finding buildings in archaeological excavations plans
+Version: 0.1
+Authors@R: c(
+  person("Nils", "Mueller-Scheessel", email = "nils.mueller-scheessel@ufg.uni-kiel.de", role = c("aut", "cre", "cph")),
+  person("Christoph", "Rinne", email = "crinne@ufg.uni-kiel.de", role = c("aut")))
+Maintainer: Nils Mueller-Scheessel <nils.mueller-scheessel@ufg.uni-kiel.de>
+Description: This package looks for postholes belonging together. It takes its idea and part of the code from the Windows-software posthole.
+Depends: R (>= 3.5.0)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports:
+    data.table,
+    geometry,
+    maptools,
+    sp,
+    spatstat,
+    Rcpp
+RoxygenNote: 6.1.1
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+LinkingTo: 
+    Rcpp

@@ -1,1 +1,0 @@
-gfortran -g -fbacktrace -fcheck=all -Wall -Wextra -Warray-temporaries -Wconversion -ffree-line-length-0 -ffpe-trap=zero,overflow,underflow -finit-real=nan POSTHOLE_edited.FOR -o POSTHOLE_edited.out 
