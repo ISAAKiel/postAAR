@@ -34,12 +34,9 @@ numbers in accordance with simulated runs.
 }
 \examples{
 library(spatstat)
-library(maptools)
-library(sp)
-library(data.table)
-sim <- sim_rect(lower = 0, upper = 200, housenumber = 0,  maxrows = 5,
-mindist = 2, maxdist = 5, pointjitter = 0.3, preserve = 100,
-rp = 16200, outputmethod = "spatstat")
+sim <- sim_rect(lower = 0, upper = 100, housenumber = 0,  maxrows = 5,
+mindist = 2, maxdist = 4, pointjitter = 0, preserve = 100,
+rp = 15000, outputmethod = "spatstat")
 
 # exporting the coordinates
 sim_coords <- spatstat::coords(sim$points)
@@ -47,6 +44,6 @@ x_coord <- sim_coords$x
 y_coord <- sim_coords$y
 
 # calculating the number of expected rectangles
-exp_rect(x_coord, y_coord, mindist = 2, maxdist = 5, pointjitter = 0.3)
+exp_rect(x_coord, y_coord, mindist = 1, maxdist = 10, pointjitter = 0.5)
 
 }

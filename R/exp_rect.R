@@ -21,12 +21,9 @@
 #'
 #' @examples
 #' library(spatstat)
-#' library(maptools)
-#' library(sp)
-#' library(data.table)
-#' sim <- sim_rect(lower = 0, upper = 200, housenumber = 0,  maxrows = 5,
-#' mindist = 2, maxdist = 5, pointjitter = 0.3, preserve = 100,
-#' rp = 16200, outputmethod = "spatstat")
+#' sim <- sim_rect(lower = 0, upper = 100, housenumber = 0,  maxrows = 5,
+#' mindist = 2, maxdist = 4, pointjitter = 0, preserve = 100,
+#' rp = 15000, outputmethod = "spatstat")
 #' 
 #' # exporting the coordinates
 #' sim_coords <- spatstat::coords(sim$points)
@@ -34,7 +31,7 @@
 #' y_coord <- sim_coords$y
 #' 
 #' # calculating the number of expected rectangles
-#' exp_rect(x_coord, y_coord, mindist = 2, maxdist = 5, pointjitter = 0.3)
+#' exp_rect(x_coord, y_coord, mindist = 1, maxdist = 10, pointjitter = 0.5)
 #' 
 #' @export
   exp_rect <- function(x_coord, y_coord, mindist, maxdist, pointjitter) {
@@ -48,9 +45,20 @@
   RMU <- (pn - 2) * 2 * (maxdist - mindist) * pointjitter / A_hull
   RLA <- -2.41 * pointjitter * pointjitter * (pn - 2) / A_hull
   SI <- RMU * (1 - exp(RLA))
+  if (SI < 1) {
   NRE <- round(0.25 * RM * exp(-SI) * SI / (1 - SI)) # NOTE: the original term "0.5" is replaced here with "0.25"
-  return(cat(sep = '',"\n","With the given parameters (minimal distance: ", 
-             mindist, ", maximal distance: ", maxdist, ", tolerance: ", pointjitter, 
-              "), the expected number of rectangles is:\n\n", NRE,".\n"))
+  } else {
+    NRE <- Inf
+  }
+  
+  # data output
+  value <- c(pn, round(A_hull), round(pn/A_hull,3), mindist, maxdist, pointjitter, NRE)
+  category <- c("point count", "area in sqm", "point density", "min distance", "max distance", "tolerance", "expected")
+  df <- data.frame(cbind(category,value))
+  return(df)
+    
+    #cat(sep = '',"\n","With the given parameters (minimal distance: ", 
+           #  mindist, ", maximal distance: ", maxdist, ", tolerance: ", pointjitter, 
+            #  "), the expected number of rectangles is:\n\n", NRE,".\n"))
 }
   
